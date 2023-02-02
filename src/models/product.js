@@ -17,16 +17,16 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
   company: {
     type: String,
     enum: {
       values: ['ikea', 'liddy', 'caressa', 'marcos'],
       message: '{VALUE} is not supported',
     },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
 });
 
