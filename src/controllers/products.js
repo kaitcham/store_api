@@ -16,6 +16,13 @@ const getAllProducts = async (req, res) => {
     result = result.select(fields);
   }
 
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    result = result.sort(sortBy);
+  } else {
+    result = result.sort('-createdAt');
+  }
+
   const products = await result;
   res.json({ products, nbHits: products.length });
 };
