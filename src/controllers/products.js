@@ -23,6 +23,28 @@ const getAllProducts = async (req, res) => {
     result = result.sort('-createdAt');
   }
 
+  if (req.query.numericFilters) {
+    const options = ['price', 'rating'];
+    const FilterObject = req.query.numericFilters;
+
+    const operatorMap = {
+      '>': '$gt',
+      '>=': '$gte',
+      '=': '$eq',
+      '<': '$lt',
+      '<=': '$lte',
+    };
+
+    FilterObject.split(',').forEach((item) => {
+      const [field, operator, value] = item.split(/\b(>|>=|=|<|<=)\b/g);
+      if (options.includes(field)) {
+        result = result.find({
+          [field]: { [operatorMap[operator]]: Number(value) },
+        });
+      }
+    });
+  }
+
   const products = await result;
   res.json({ products, nbHits: products.length });
 };
