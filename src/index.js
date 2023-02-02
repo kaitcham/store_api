@@ -3,6 +3,8 @@ require('express-async-errors');
 const express = require('express');
 const connectDB = require('./db/connect');
 const productsRouter = require('./routes/products');
+const notFoundError = require('./middleware/notFound');
+const customErrorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,6 +12,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use('/api/v1/products', productsRouter);
+
+app.use(notFoundError);
+app.use(customErrorHandler);
 
 const checkConnectionAndStartServer = async () => {
   try {
